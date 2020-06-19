@@ -1,4 +1,4 @@
-package vn.edu.ntu.quangnghia.btfargment;
+package vn.edu.ntu.quynhnhanh.btfargment;
 
 import android.os.Bundle;
 
@@ -20,17 +20,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.ntu.quangnghia.controller.IController;
-import vn.edu.ntu.quangnghia.model.Product;
+import vn.edu.ntu.quynhnhanh.controller.IController;
+import vn.edu.ntu.quynhnhanh.model.Product;
 
 
 public class productFragment extends Fragment {
     RecyclerView rvListProduct;
     ProductAdapter adapter;
     List<Product> listProducts = new ArrayList<>();
+    FloatingActionButton floatingActionButton;
+
    public productFragment(){
     }
 
@@ -66,24 +70,37 @@ public class productFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_product,container,false);
+        View view = inflater.inflate(R.layout.fragment_list_product,container,false);
         addviews(view);
+        addActions();
         return view;
     }
     private void addviews(View view){
        rvListProduct = view.findViewById(R.id.rvlistproduct);
-        IController controller =(IController) this.getActivity().getApplication();
+        IController controller =((MainActivity)getActivity()).controller;
         listProducts =controller.getProduct();
         adapter = new ProductAdapter(listProducts);
 
         rvListProduct.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         rvListProduct.setAdapter(adapter);
+
+        floatingActionButton = view.findViewById(R.id.floatingActionButton);
+    }
+
+    private void addActions(){
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = NavHostFragment.findNavController(productFragment.this);
+                navController.navigate(R.id.action_productFragment_to_addProductFragment);
+            }
+        });
     }
 
     private class ProductViewHolder extends RecyclerView.ViewHolder{
 
         TextView txtName, txtPrice, txtDesc;
-        ImageView imgAddToCart;
+        ImageView imgAddToCart, imgEdit, imgDel;
         Product p;
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -91,15 +108,15 @@ public class productFragment extends Fragment {
             txtName = itemView.findViewById(R.id.txtName);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtDesc = itemView.findViewById(R.id.txtDesc);
-            imgAddToCart = itemView.findViewById(R.id.imvaddtocart);
+            imgAddToCart = itemView.findViewById(R.id.imgAddToCart);
+            imgDel = itemView.findViewById(R.id.imgDel);
 
             imgAddToCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        IController controller = (IController) productFragment.this.getActivity().getApplication();
-                        if(controller.checkShopping(p)){
+                        IController controller = ((MainActivity)getActivity()).controller;
+                        if(controller.addToCart(p)){
                             Toast.makeText(productFragment.this.getActivity(), p.getName()+ " da them vao gio hang \n",Toast.LENGTH_SHORT).show();
-
                         }
                         else
                             Toast.makeText(productFragment.this.getActivity(), p.getName()+ " da co o trong gio hang \n",Toast.LENGTH_SHORT).show();
@@ -134,6 +151,13 @@ public class productFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
             holder.bind(listProducts.get(position));
+            holder.imgDel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    IController controller =((MainActivity)getActivity()).controller;
+
+                }
+            });
         }
 
         @Override

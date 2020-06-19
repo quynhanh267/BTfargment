@@ -1,4 +1,4 @@
-package vn.edu.ntu.quangnghia.btfargment;
+package vn.edu.ntu.quynhnhanh.btfargment;
 
 import android.os.Bundle;
 
@@ -15,8 +15,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.ntu.quangnghia.controller.IController;
-import vn.edu.ntu.quangnghia.model.Product;
+import vn.edu.ntu.quynhnhanh.controller.IController;
+import vn.edu.ntu.quynhnhanh.model.Product;
 
 
 public class shoppingcartFragment extends Fragment {
@@ -41,7 +41,7 @@ public class shoppingcartFragment extends Fragment {
         btnOK = view.findViewById(R.id.btnOK);
         btnCannel = view.findViewById(R.id.btnCannel);
 
-        IController controller = (IController) this.getActivity().getApplication();
+        IController controller = ((MainActivity)getActivity()).controller;
         listProducts = controller.getShopping();
         StringBuilder builder = new StringBuilder();
         for(Product p:listProducts){

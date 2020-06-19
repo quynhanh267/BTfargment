@@ -1,11 +1,11 @@
-package vn.edu.ntu.quangnghia.controller;
+package vn.edu.ntu.quynhnhanh.controller;
 
 import android.app.Application;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.ntu.quangnghia.model.Product;
+import vn.edu.ntu.quynhnhanh.model.Product;
 
 public class Controller extends Application implements IController {
     List<Product> products = new ArrayList<>();
@@ -48,5 +48,14 @@ public class Controller extends Application implements IController {
         productsShopping.clear();
     }
 
+    @Override
+    public void addProduct(Product p) {
+        products.add(p);
+    }
+
+    @Override
+    public boolean addToCart(Product p) {
+        return false;
+    }
 
 }
